@@ -19,10 +19,8 @@ namespace FileChecker
 
         private static ExcelColumnChecker _instance;
         private static FileStream fetchFileStream;
-        private static readonly IFileListReader FileListReader;
         private Stopwatch stopwatch = new Stopwatch();
         public static Dictionary<string, bool> Files;
-        private static IDataSourceReadAsDataTable DataSourceReadAsDataTable;
         /// <summary>
         /// 回收状态
         /// </summary>
@@ -31,7 +29,6 @@ namespace FileChecker
         static ExcelColumnChecker()
         {
             checkerConfig = CheckerConfig.Instance;
-            FileListReader = FileListFactory.CreateFileListReader(checkerConfig.FileListFilename);
         }
 
         /// <summary>
@@ -56,12 +53,15 @@ namespace FileChecker
                 ("文件类型为：" + checkerConfig.FileListFilename.ToLowerInvariant().Split('.').Last()).WriteLog();
                 ("读取文件列表中。。。").WriteLog();
                 stopwatch.Start();
-                var filelist = FileListReader.Load(checkerConfig.FileListFilename, checkerConfig.SkipRow, checkerConfig.ValueColumnIndex);
+
+                var filelist = FileReaderFactory.CreateFileReader(checkerConfig.FileListFilename).Load(checkerConfig.FileListFilename, checkerConfig.SkipRow, checkerConfig.ValueColumnIndex);
                 string.Format("读取完毕，共 {0} 行记录，耗时 {1} ms", filelist.Count, stopwatch.ElapsedMilliseconds).WriteLog();
                 stopwatch.Restart();
+
                 ("读取 Excel 文件中。。。").WriteLog();
-                var dt = new ExcelReadHelper().Load(checkerConfig.ExcelFileName);
+                var dt = FileReaderFactory.CreateFileReader(checkerConfig.ExcelFileName).Load(checkerConfig.ExcelFileName);
                 string.Format("读取完毕，共 {0} 行记录，耗时 {1} ms", dt.Rows.Count, stopwatch.ElapsedMilliseconds).WriteLog();
+
                 "开始检查。。。".WriteLog();
                 /// 打开日志文件写入流
                 fetchFileStream = File.OpenWrite(string.Format("fetch_files_{0}.txt", DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss")));
@@ -70,7 +70,6 @@ namespace FileChecker
                 int colcount = dt.Columns.Count;
                 string temp = string.Empty;
                 StringBuilder tmpStr = new StringBuilder(2048);
-                //var fetchDt = dt.Select(string.Format("{0} in ('{1}')", checkerConfig.ExcelFetchKeyname, string.Join("','", filelist)));
                 foreach (var item in filelist)
                 {
                     current += 1;

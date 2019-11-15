@@ -10,7 +10,7 @@ namespace FileChecker
     /// <summary>
     /// 从数据源读取并返回DataTable
     /// </summary>
-    public interface IDataSourceReadAsDataTable
+    public interface IFileReadAsDataTable
     {
         /// <summary>
         /// 从数据源读取并返回DataTable

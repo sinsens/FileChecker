@@ -15,7 +15,6 @@ namespace FileChecker
         private static readonly CheckerConfig checkerConfig;
         private static readonly object lockObj;
         private static FileStatusChecker _instance;
-        private static IFileListReader FileListReader;
         private static FileStream fetchFileStream;
         private static FileStream missFileStream;
         private static FileStream checkedFileStream;
@@ -30,7 +29,6 @@ namespace FileChecker
             lockObj = new object();
             Files = new Dictionary<string, bool>();
             checkerConfig = CheckerConfig.Instance;
-            FileListReader = FileListFactory.CreateFileListReader(checkerConfig.FileListFilename);
         }
 
         /// <summary>
@@ -81,7 +79,7 @@ namespace FileChecker
                 ("文件类型为：" + checkerConfig.FileListFilename.ToLowerInvariant().Split('.').Last()).WriteLog();
                 ("读取文件列表中。。。").WriteLog();
                 stopwatch.Start();
-                var filelist = FileListReader.Load(checkerConfig.FileListFilename, checkerConfig.SkipRow, checkerConfig.ValueColumnIndex);
+                var filelist = FileReaderFactory.CreateFileReader(checkerConfig.FileListFilename).Load(checkerConfig.FileListFilename, checkerConfig.SkipRow, checkerConfig.ValueColumnIndex);
                 string.Format("读取完毕，共 {0} 行记录，耗时 {1} ms", filelist.Count, stopwatch.ElapsedMilliseconds).WriteLog();
                 stopwatch.Restart();
                 "开始检查。。。".WriteLog();

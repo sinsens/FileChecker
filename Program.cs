@@ -9,12 +9,13 @@ namespace FileChecker
         {
             try
             {
-                Console.WriteLine("检查器：{0}", CheckerConfig.appSettingsReader.GetValue("IFileChcker", typeof(string)) as string);
-                Console.WriteLine("参照文件路径：{0}", CheckerConfig.Instance.FileListFilename);
+                AppSettingsReader appSettingReader = new AppSettingsReader();
+                Console.WriteLine("检查器：{0}", appSettingReader.GetValue("IFileChecker", typeof(string)) as string);
+                Console.WriteLine("参照文件路径：{0}", appSettingReader.GetValue("FileListFilename", typeof(string)) as string);
                 Console.WriteLine("按任意键开始");
                 Console.ReadKey();
                 Console.Clear();
-                CheckerConfig.Instance.FileChecker.Start();
+                FileCheckerCreator.Create().Start();
             }
             catch (Exception ex)
             {

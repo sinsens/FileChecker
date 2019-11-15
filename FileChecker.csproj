@@ -48,23 +48,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExcelFileHelper.cs" />
+    <Compile Include="AppSettingsConfigReader.cs" />
+    <Compile Include="FileCheckerCreator.cs" />
     <Compile Include="FileStatusChecker.cs" />
     <Compile Include="CheckerConfig.cs" />
-    <Compile Include="Common.cs" />
-    <Compile Include="CsvFileListReader.cs" />
+    <Compile Include="Extension.cs" />
+    <Compile Include="IConfigReader.cs" />
+    <Compile Include="TxtFileReader.cs" />
     <Compile Include="ExcelColumnChecker.cs" />
-    <Compile Include="IDataSourceReadAsDataTable.cs" />
+    <Compile Include="IFileReadAsDataTable.cs" />
     <Compile Include="IFileChecker.cs" />
-    <Compile Include="TxtFileListReader.cs" />
-    <Compile Include="ExcelFileListReader.cs" />
-    <Compile Include="FileListFactory.cs" />
-    <Compile Include="IFileListReader.cs" />
+    <Compile Include="ExcelFileReader.cs" />
+    <Compile Include="FileReaderFactory.cs" />
+    <Compile Include="IFileReader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
